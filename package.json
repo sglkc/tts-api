@@ -1,0 +1,21 @@
+{
+  "name": "tts",
+  "version": "1.0.0",
+  "description": "Google Text to Speech",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "sglkc",
+  "license": "MIT",
+  "dependencies": {
+    "@sefinek/google-tts-api": "^2.1.5",
+    "fastify": "^4.28.1",
+    "fluent-ffmpeg": "^2.1.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "typescript": "^5.5.3"
+  }
+}
