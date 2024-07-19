@@ -1,7 +1,7 @@
 {
   "name": "tts-api",
   "version": "1.0.0",
-  "description": "Free, CORS-friendly Google Text to Speech API with pitch and speed modifier",
+  "description": "Free, minimal, CORS-friendly Google Translate Text to Speech API with pitch and speed modifier using ffmpeg",
   "author": "sglkc",
   "license": "MIT",
   "main": "index.js",
