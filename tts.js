@@ -3,8 +3,8 @@ import { Readable } from 'node:stream'
 import Ffmpeg from 'fluent-ffmpeg'
 import * as TTS from '@sefinek/google-tts-api'
 
-export default async function main(payload) {
-  const { text, lang = 'en', speed = 1, pitch = 1 } = payload
+export default async function main(payload, ffmpegPath = null) {
+  const { text, lang = 'en', speed, pitch = 1 } = payload
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
@@ -19,6 +19,8 @@ export default async function main(payload) {
   const audios = await TTS.getAllAudioBase64(text, { lang })
   const ffmpeg = Ffmpeg()
 
+  if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath)
+
   audios.forEach(({ base64 }) => {
     const buffer = Buffer.from(base64, 'base64')
     const stream = Readable.from(buffer)
@@ -28,7 +30,7 @@ export default async function main(payload) {
 
   const sample = 44100
   const setrate = sample * pitch
-  const tempo = (1 + (1 - pitch))
+  const tempo = speed || (1 + (1 - pitch))
   const chunks = []
 
   await new Promise((resolve, reject) => ffmpeg
