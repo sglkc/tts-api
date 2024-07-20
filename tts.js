@@ -6,10 +6,10 @@ import { execSync } from 'node:child_process'
 
 export default async function main(payload) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
-  const dir = await fs.readdir('/opt/build/repo/bin')
+  const dir = await fs.readdir('.')
 
   console.log(process.env, dir)
-  console.log(execSync("/opt/build/repo/bin/ffmpeg --help", { stdio: 'inherit' }).toString())
+  console.log(execSync("pwd", { stdio: 'inherit' }).toString())
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
