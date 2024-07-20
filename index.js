@@ -9,10 +9,11 @@ import * as TTS from '@sefinek/google-tts-api'
 
 export default async function main(payload, ffmpegPath = null) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
-  const cors = {
+  const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': '*',
     'Access-Control-Allow-Methods': '*',
+    'Cache-Control': 'public, max-age=31536000, immutable'
   }
 
   if (!text || !text.length) {
@@ -21,7 +22,7 @@ export default async function main(payload, ffmpegPath = null) {
       statusText: '`text` is missing',
       headers: {
         'content-type': 'text/html; charset=utf-8',
-        ...cors
+        ...headers
       }
     })
   }
@@ -61,6 +62,6 @@ export default async function main(payload, ffmpegPath = null) {
     headers: {
       'content-type': 'audio/mp3',
       'content-disposition': 'inline',
-      ...cors
+      ...headers
     }
   })}

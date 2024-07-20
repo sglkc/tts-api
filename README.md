@@ -9,6 +9,7 @@ Options:
 Example:
   (original female) <a href="/?text=こんにちは&lang=ja">/?text=こんにちは&lang=ja</a>
   (male pitch) <a href="/?text=こんにちは&lang=ja&pitch=0.8">/?text=こんにちは&lang=ja&pitch=0.8</a>
-Repostory:
-  <a href="https://github.com/sglkc/tts-api">https://github.com/sglkc/tts-api</a>
+  (json) { "text": "Selamat dunia", "lang": "id" }
+Repository:
+  Please leave a star <a href="https://github.com/sglkc/tts-api">https://github.com/sglkc/tts-api</a> ;)
 </pre>
