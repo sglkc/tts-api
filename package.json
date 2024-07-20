@@ -4,11 +4,11 @@
   "description": "Free, minimal, CORS-friendly Google Translate Text to Speech API with pitch and speed modifier using ffmpeg",
   "author": "sglkc",
   "license": "MIT",
-  "main": "index.js",
+  "main": "api.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch-preserve-output --watch index.js",
-    "start": "node index.js"
+    "dev": "node --watch-preserve-output --watch api.js",
+    "start": "node api.js"
   },
   "dependencies": {
     "@sefinek/google-tts-api": "^2.1.5",

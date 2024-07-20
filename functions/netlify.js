@@ -1,4 +1,4 @@
-import main from "../tts.js"
+import main from "../index.js"
 
 export default async function handler(req) {
   const body = await req.json().catch(() => false)
