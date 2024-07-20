@@ -1,15 +1,10 @@
-import fs, { readFile } from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import Ffmpeg from 'fluent-ffmpeg'
 import * as TTS from '@sefinek/google-tts-api'
-import { execSync } from 'node:child_process'
 
 export default async function main(payload) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
-  const dir = await fs.readdir('.')
-
-  console.log(process.env, dir)
-  console.log(execSync("pwd", { stdio: 'inherit' }).toString())
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
