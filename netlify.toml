@@ -1,14 +1,15 @@
 [build.environment]
-  FFMPEG_PATH = "/opt/build/repo/ffmpeg"
-  FFPROBE_PATH = "/opt/build/repo/ffprobe"
+  FFMPEG_PATH = "/opt/build/repo/bin/ffmpeg"
+  FFPROBE_PATH = "/opt/build/repo/bin/ffprobe"
 
 [context.production]
   command = """
-  wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
-  tar xvf ffmpeg-git-amd64-static.tar.xz
-  mv **/ffmpeg **/ffprobe /opt/build/repo
-  ls -lah
-  ls -lah /opt/build/repo
+  mkdir bin;
+  cd bin;
+  wget -q https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz;
+  tar xf ffmpeg-git-amd64-static.tar.xz;
+  mv ./**/ffmpeg ./**/ffprobe .;
+  rm -rf ffmpeg-git*;
   """
 
 [functions]
