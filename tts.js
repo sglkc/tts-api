@@ -1,10 +1,15 @@
-import { readFile } from 'node:fs/promises'
+import fs, { readFile } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import Ffmpeg from 'fluent-ffmpeg'
 import * as TTS from '@sefinek/google-tts-api'
+import { execSync } from 'node:child_process'
 
 export default async function main(payload) {
-  const { text, lang = 'en', speed = 1, pitch = 1 } = payload
+  const { text, lang = 'en', speed, pitch = 1 } = payload
+  const dir = await fs.readdir('/opt/build/repo/bin')
+
+  console.log(process.env, dir)
+  console.log(execSync("/opt/build/repo/bin/ffmpeg --help", { stdio: 'inherit' }).toString())
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
@@ -28,7 +33,7 @@ export default async function main(payload) {
 
   const sample = 44100
   const setrate = sample * pitch
-  const tempo = (1 + (1 - pitch))
+  const tempo = speed || (1 + (1 - pitch))
   const chunks = []
 
   await new Promise((resolve, reject) => ffmpeg
