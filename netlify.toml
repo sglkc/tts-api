@@ -1,3 +1,16 @@
+[build.environment]
+  FFMPEG_PATH = "/opt/build/repo/ffmpeg"
+  FFPROBE_PATH = "/opt/build/repo/ffprobe"
+
+[context.production]
+  command = """
+  wget https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz
+  tar xvf ffmpeg-git-amd64-static.tar.xz
+  mv **/ffmpeg **/ffprobe /opt/build/repo
+  ls -lah
+  ls -lah /opt/build/repo
+  """
+
 [functions]
   directory = "/functions"
   included_files = ["README.md"]
