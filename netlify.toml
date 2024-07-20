@@ -1,8 +1,4 @@
-[build.environment]
-  FFMPEG_PATH = "/opt/build/repo/bin/ffmpeg"
-  FFPROBE_PATH = "/opt/build/repo/bin/ffprobe"
-
-[context.production]
+[build]
   command = """
   mkdir bin;
   cd bin;
@@ -12,9 +8,13 @@
   rm -rf ffmpeg-git*;
   """
 
+[build.environment]
+  FFMPEG_PATH = "/var/task/bin/ffmpeg"
+  FFPROBE_PATH = "/var/task/bin/ffprobe"
+
 [functions]
   directory = "/functions"
-  included_files = ["README.md"]
+  included_files = [ "bin/*", "README.md" ]
 
 [[redirects]]
   from = "/"
@@ -25,6 +25,6 @@
 [[headers]]
   for = "/"
   [headers.values]
-  Access-Control-Allow-Origin = "*"
-  Access-Control-Allow-Headers = "*"
-  Access-Control-Allow-Methods = "*"
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Headers = "*"
+    Access-Control-Allow-Methods = "*"
