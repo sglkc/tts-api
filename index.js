@@ -1,10 +1,8 @@
 import Fastify from 'fastify'
-import FastifyCors from '@fastify/cors'
 import main from './tts.js'
 
 const app = Fastify()
 
-app.register(FastifyCors, { origin: '*' })
 app.route({
   method: ['GET', 'POST'],
   url: '/',

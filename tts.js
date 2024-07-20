@@ -5,6 +5,11 @@ import * as TTS from '@sefinek/google-tts-api'
 
 export default async function main(payload, ffmpegPath = null) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
+  const cors = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': '*',
+    'Access-Control-Allow-Methods': '*',
+  }
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
@@ -12,6 +17,7 @@ export default async function main(payload, ffmpegPath = null) {
       statusText: '`text` is missing',
       headers: {
         'content-type': 'text/html; charset=utf-8',
+        ...cors
       }
     })
   }
@@ -46,12 +52,11 @@ export default async function main(payload, ffmpegPath = null) {
     .on('data', chunk => chunks.push(chunk))
   )
 
-  const result = Buffer.concat(chunks)
-
-  return new Response(result, {
+  return new Response(Buffer.concat(chunks), {
     status: 200,
     headers: {
       'content-type': 'audio/mp3',
       'content-disposition': 'inline',
+      ...cors
     }
   })}
