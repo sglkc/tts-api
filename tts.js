@@ -3,9 +3,8 @@ import { Readable } from 'node:stream'
 import Ffmpeg from 'fluent-ffmpeg'
 import * as TTS from '@sefinek/google-tts-api'
 
-export default async function main(payload) {
+export default async function main(payload, ffmpegPath = null) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
-  const isServerless = 'AWS_LAMBDA_FUNCTION_NAME' in process.env
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
@@ -20,7 +19,7 @@ export default async function main(payload) {
   const audios = await TTS.getAllAudioBase64(text, { lang })
   const ffmpeg = Ffmpeg()
 
-  if (isServerless) ffmpeg.setFfmpegPath('/var/task/bin/ffmpeg')
+  if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath)
 
   audios.forEach(({ base64 }) => {
     const buffer = Buffer.from(base64, 'base64')
