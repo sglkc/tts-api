@@ -1,4 +1,5 @@
-import fs from 'node:fs/promises'
+import { readFile } from 'node:fs/promises'
+import { Readable } from 'node:stream'
 import Ffmpeg from 'fluent-ffmpeg'
 import * as TTS from '@sefinek/google-tts-api'
 
@@ -6,7 +7,7 @@ export default async function main(payload) {
   const { text, lang = 'en', speed = 1, pitch = 1 } = payload
 
   if (!text || !text.length) {
-    return new Response(await fs.readFile('./README.md'), {
+    return new Response(await readFile('./README.md'), {
       status: 200,
       statusText: '`text` is missing',
       headers: {
@@ -17,19 +18,18 @@ export default async function main(payload) {
 
   const audios = await TTS.getAllAudioBase64(text, { lang })
   const ffmpeg = Ffmpeg()
-  let i = 0
 
-  for (const audio of audios) {
-    const file = `${i}.mp3`
+  audios.forEach(({ base64 }) => {
+    const buffer = Buffer.from(base64, 'base64')
+    const stream = Readable.from(buffer)
 
-    await fs.writeFile(file, audio.base64, 'base64')
-    ffmpeg.addInput(file)
-    i++
-  }
+    ffmpeg.addInput(stream).format('mp3')
+  })
 
   const sample = 44100
-  const setrate = sample * (pitch || 1)
-  const tempo = speed || (1 + (1 - pitch))
+  const setrate = sample * pitch
+  const tempo = (1 + (1 - pitch))
+  const chunks = []
 
   await new Promise((resolve, reject) => ffmpeg
     .audioFilter([
@@ -39,10 +39,14 @@ export default async function main(payload) {
     ])
     .on('end', resolve)
     .on('error', reject)
-    .save('./output.mp3')
+    .outputFormat('mp3')
+    .pipe()
+    .on('data', chunk => chunks.push(chunk))
   )
 
-  return new Response(await fs.readFile('./output.mp3'), {
+  const result = Buffer.concat(chunks)
+
+  return new Response(result, {
     status: 200,
     headers: {
       'content-type': 'audio/mp3',
