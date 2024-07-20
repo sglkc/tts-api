@@ -1,0 +1,16 @@
+[functions]
+  directory = "/functions"
+  included_files = ["README.md"]
+
+[[redirects]]
+  from = "/"
+  to = "/.netlify/functions/netlify"
+  status = 200
+  force = true
+
+[[headers]]
+  for = "/"
+  [headers.values]
+  Access-Control-Allow-Origin = "*"
+  Access-Control-Allow-Headers = "*"
+  Access-Control-Allow-Methods = "*"
