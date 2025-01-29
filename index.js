@@ -2,10 +2,9 @@
  * Run ./api.js if you want to use a server!
  */
 
-import { readFile } from 'node:fs/promises'
-import { Readable } from 'node:stream'
-import Ffmpeg from 'fluent-ffmpeg'
+import { readFile, writeFile } from 'node:fs/promises'
 import * as TTS from '@sefinek/google-tts-api'
+import Ffmpeg from 'fluent-ffmpeg'
 
 export default async function main(payload, ffmpegPath = null) {
   const { text, lang = 'en', speed, pitch = 1 } = payload
@@ -29,15 +28,18 @@ export default async function main(payload, ffmpegPath = null) {
 
   const audios = await TTS.getAllAudioBase64(text, { lang })
   const ffmpeg = Ffmpeg()
+  const files = []
 
   if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath)
 
-  audios.forEach(({ base64 }) => {
+  for (const { base64 } of audios) {
+    const path = `${Date.now()}.mp3`
     const buffer = Buffer.from(base64, 'base64')
-    const stream = Readable.from(buffer)
 
-    ffmpeg.addInput(stream).format('mp3')
-  })
+    files.push(path)
+    ffmpeg.addInput(path)
+    await writeFile(path, buffer)
+  }
 
   const sample = 44100
   const setrate = sample * pitch
@@ -45,11 +47,13 @@ export default async function main(payload, ffmpegPath = null) {
   const chunks = []
 
   await new Promise((resolve, reject) => ffmpeg
-    .audioFilter([
-      { filter: 'aresample', options: sample },
-      { filter: 'asetrate', options: setrate },
-      { filter: 'atempo', options: tempo },
+    .complexFilter([
+      { filter: 'concat', options: { n: files.length, v: 0, a: 1 }, outputs: 'merged' },
+      { filter: 'aresample', options: sample, inputs: 'merged', outputs: 'resampled' },
+      { filter: 'asetrate', options: setrate, inputs: 'resampled', outputs: 'rated' },
+      { filter: 'atempo', options: tempo, inputs: 'rated', outputs: 'final' },
     ])
+    .outputOptions('-map [final]')
     .on('end', resolve)
     .on('error', reject)
     .outputFormat('mp3')
@@ -64,4 +68,5 @@ export default async function main(payload, ffmpegPath = null) {
       'content-disposition': 'inline',
       ...headers
     }
-  })}
+  })
+}
