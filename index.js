@@ -4,6 +4,7 @@
 
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
+import { randomUUID } from 'node:crypto'
 import * as TTS from '@sefinek/google-tts-api'
 import Ffmpeg from 'fluent-ffmpeg'
 
@@ -34,7 +35,7 @@ export default async function main(payload, tmp = '', ffmpegPath = '') {
   if (ffmpegPath.length) ffmpeg.setFfmpegPath(ffmpegPath)
 
   for (const { base64 } of audios) {
-    const path = join(tmp, `${Date.now()}.mp3`)
+    const path = join(tmp, `${randomUUID()}.mp3`)
     const buffer = Buffer.from(base64, 'base64')
 
     files.push(path)
