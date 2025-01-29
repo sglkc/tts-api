@@ -3,10 +3,11 @@
  */
 
 import { readFile, writeFile } from 'node:fs/promises'
+import { join } from 'node:path'
 import * as TTS from '@sefinek/google-tts-api'
 import Ffmpeg from 'fluent-ffmpeg'
 
-export default async function main(payload, ffmpegPath = null) {
+export default async function main(payload, tmp = '', ffmpegPath = '') {
   const { text, lang = 'en', speed, pitch = 1 } = payload
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -30,10 +31,10 @@ export default async function main(payload, ffmpegPath = null) {
   const ffmpeg = Ffmpeg()
   const files = []
 
-  if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath)
+  if (ffmpegPath.length) ffmpeg.setFfmpegPath(ffmpegPath)
 
   for (const { base64 } of audios) {
-    const path = `${Date.now()}.mp3`
+    const path = join(tmp, `${Date.now()}.mp3`)
     const buffer = Buffer.from(base64, 'base64')
 
     files.push(path)

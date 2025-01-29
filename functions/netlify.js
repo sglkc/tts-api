@@ -6,5 +6,5 @@ export default async function handler(req) {
   const query = Object.fromEntries(new URL(req.url).searchParams)
   const payload = Object.assign({}, body, form, query)
 
-  return await main(payload, '/var/task/bin/ffmpeg')
+  return await main(payload, '/tmp/', '/var/task/bin/ffmpeg')
 }
