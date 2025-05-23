@@ -17,6 +17,9 @@ importers:
       fluent-ffmpeg:
         specifier: ^2.1.3
         version: 2.1.3
+      google-translate-api-x:
+        specifier: ^10.7.2
+        version: 10.7.2
 
 packages:
 
@@ -158,6 +161,10 @@ packages:
   forwarded@0.2.0:
     resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
     engines: {node: '>= 0.6'}
+
+  google-translate-api-x@10.7.2:
+    resolution: {integrity: sha512-GSmbvGMcnULaih2NFgD4Y6840DLAMot90mLWgwoB+FG/QpetyZkFrZkxop8ZxXgOAQXGskFOhGJady8nA6ZJ2g==}
+    engines: {node: '>=14.0.0'}
 
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
@@ -434,6 +441,8 @@ snapshots:
       mime-types: 2.1.35
 
   forwarded@0.2.0: {}
+
+  google-translate-api-x@10.7.2: {}
 
   ieee754@1.2.1: {}
 

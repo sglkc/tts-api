@@ -6,16 +6,17 @@ import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import * as TTS from '@sefinek/google-tts-api'
+import { translate } from 'google-translate-api-x'
 import Ffmpeg from 'fluent-ffmpeg'
 
 export default async function main(payload, tmp = '', ffmpegPath = '') {
-  const { text, lang = 'en', speed, pitch = 1 } = payload
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': '*',
     'Access-Control-Allow-Methods': '*',
     'Cache-Control': 'public, max-age=31536000, immutable'
   }
+  let { text, lang = 'auto', speed, pitch = 1 } = payload
 
   if (!text || !text.length) {
     return new Response(await readFile('./README.md'), {
@@ -26,6 +27,21 @@ export default async function main(payload, tmp = '', ffmpegPath = '') {
         ...headers
       }
     })
+  }
+
+  if (lang === 'auto') {
+    try {
+      const res = await translate(text)
+
+      if (Array.isArray(res)) {
+        lang = res[0].from.language.iso
+      } else {
+        lang = res.from.language.iso
+      }
+    } catch (error) {
+      console.error(error)
+      lang = 'en'
+    }
   }
 
   const audios = await TTS.getAllAudioBase64(text, { lang })

@@ -13,6 +13,7 @@
   "dependencies": {
     "@sefinek/google-tts-api": "^2.1.5",
     "fastify": "^4.28.1",
-    "fluent-ffmpeg": "^2.1.3"
+    "fluent-ffmpeg": "^2.1.3",
+    "google-translate-api-x": "^10.7.2"
   }
 }

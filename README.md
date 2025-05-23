@@ -1,11 +1,11 @@
 <pre>
 Request: Supports GET and POST, query and body, JSON and FormData.
 Options:
-  text  (required)     Text to read
-  lang  (default: en)  Speaker language, reference:
-                       https://developers.google.com/admin-sdk/directory/v1/languages
-  speed (default: 1)   Audio speed, higher value is faster
-  pitch (default: 1)   Audio pitch, higher value is higher (yeah)
+  text  (required)       Text to read
+  lang  (default: auto)  Speaker language, if 'auto' then try to detect using Google Translate. Reference:
+                         https://developers.google.com/admin-sdk/directory/v1/languages
+  speed (default: 1)     Audio speed, higher value is faster
+  pitch (default: 1)     Audio pitch, higher value is higher (yeah)
 Example:
   (original female) <a href="/?text=こんにちは&lang=ja">/?text=こんにちは&lang=ja</a>
   (male pitch) <a href="/?text=こんにちは&lang=ja&pitch=0.8">/?text=こんにちは&lang=ja&pitch=0.8</a>
