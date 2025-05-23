@@ -1,12 +1,13 @@
-[build]
-  command = """
-  mkdir bin;
-  cd bin;
-  wget -q https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz;
-  tar xf ffmpeg-git-amd64-static.tar.xz;
-  mv ./**/ffmpeg ./**/ffprobe .;
-  rm -rf ffmpeg-git*;
-  """
+# fluent-ffmpeg is deprecated, https://github.com/fluent-ffmpeg/node-fluent-ffmpeg/
+# [build]
+#   command = """
+#   mkdir bin;
+#   cd bin;
+#   wget -q https://johnvansickle.com/ffmpeg/builds/ffmpeg-git-amd64-static.tar.xz;
+#   tar xf ffmpeg-git-amd64-static.tar.xz;
+#   mv ./**/ffmpeg ./**/ffprobe .;
+#   rm -rf ffmpeg-git*;
+#   """
 
 [build.environment]
   FFMPEG_PATH = "/var/task/bin/ffmpeg"

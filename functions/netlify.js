@@ -6,5 +6,14 @@ export default async function handler(req) {
   const query = Object.fromEntries(new URL(req.url).searchParams)
   const payload = Object.assign({}, body, form, query)
 
-  return await main(payload, '/tmp/', '/var/task/bin/ffmpeg')
+  try {
+    return await main(payload, '/tmp/', '/var/task/bin/ffmpeg')
+  } catch (error) {
+    return new Response(error, {
+      status: 500,
+      headers: {
+        'content-type': 'text/plain; charset=utf-8',
+      }
+    })
+  }
 }
